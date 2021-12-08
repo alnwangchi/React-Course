@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    h1 {
+      cursor: pointer;
+    }
+  </style>
+  <div id="root"></div>
+</head>
+<body>
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+    //  Class component
+    class Weather extends React.Component {
+      
+      constructor(props) {
+        console.log('constructor');
+        super(props);
+        this.state = {
+          isHot: false,
+          feel: '好爽'
+        };
+        this.changeIsHot = this.changeIsHot.bind(this);
+      }
+
+      render() {
+        console.log('render');
+        const {isHot, feel} = this.state
+        return <h1 onClick={this.changeIsHot}>今天天氣很{isHot ? '炎熱' : '寒冷'}，{feel}</h1>
+      }
+      
+      changeIsHot() {
+        // 這個方法放在 Weather 的原型上，供實例使用
+        // 只有當 Weather 實例呼叫這個方法時， this 指向才是 Weather 實例
+        //console.log(this); // 這邊直接調用 this 會是 undefined，因為 class 內的方法會採局部嚴格模式
+
+        // 因為著個方法是作為 onClick 的 callback，屬於直接呼叫，並非透過實例呼叫
+        // console.log(this.state.isHot); // 有改變值，但不會會觸發重重新渲染
+        // 注意注意注意 !!! state 不可以直接更改，要用他原型上的 setState 改
+        // this.state.isHot = !this.state.isHot // 這行就是直接更改 錯錯錯
+
+        // 注意注意注意 !!! state 必須透過 setState 去更新，且更新是合併非替換，所以 feel 會保持
+        const isHot = this.state.isHot
+        this.setState({
+          isHot: !isHot
+        })
+      }
+    }
+    
+
+    ReactDOM.render(<Weather />, document.getElementById("root"))
+    
+  </script>
+</body>
+</html>
