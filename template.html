@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+
+  </style>
+  <div id="root"></div>
+</head>
+<body>
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <!-- 用於限制屬性類型 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.min.js" integrity="sha512-ssNhh7jlzc+K93ckIlSXFHHz6fSFv0l619WOv8xbFNRbFOujbasb42LVMOggDrQR1ScJncoWb+KAJx1uF3ipjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/babel">
+    class Demo extends React.Component {
+
+      showValue = () => {
+        const value = this.refs.input1.value // 拿到真實 DOM 的 value
+        console.log(this.refs.input1); // real DOM
+        // debugger;
+        alert(value)
+      }
+
+      showValue2 = (e) => {
+        // const {input2} = this.refs // 解構取值要多多熟練點
+        // alert(input2.value)
+
+        // 這邊因爲事件觸發就在該 DOM 上，所以其實並不需要 ref
+        const value = e.target.value
+        alert(value)
+      }
+
+      render() {
+        return (
+          <div>
+            <input ref="input1" type="text" placeholder="點按鈕跳這邊的值"/>
+            <button onClick={this.showValue}>點擊跳彈窗</button>
+            <input ref="input2" onBlur={this.showValue2} type="text" placeholder="離開輸入框跳這邊的值"/>
+          </div>
+        )
+      }
+    }
+
+
+    ReactDOM.render(<Demo />, document.getElementById("root"))
+    
+  </script>
+</body>
+</html>
