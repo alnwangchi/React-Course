@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+
+  </style>
+  <div id="root"></div>
+  <!-- <div id="root2"></div> -->
+  <div id="root3"></div>
+</head>
+<body>
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <!-- 用於限制屬性類型 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.min.js" integrity="sha512-ssNhh7jlzc+K93ckIlSXFHHz6fSFv0l619WOv8xbFNRbFOujbasb42LVMOggDrQR1ScJncoWb+KAJx1uF3ipjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/babel">
+    //  Class component
+    class Person extends React.Component {
+      static propTypes = {
+        name: PropTypes.string.isRequired, // 沒生效啊
+        age: PropTypes.number,
+      }
+      // 預設值設定 有效
+      static defaultProps = {
+        name: 'Allen'
+      }
+
+      render() {
+        const {name, age ,sex} = this.props;
+        // age = 50 // props 是 readonly地，不可以改
+        return (
+          <ul>
+            <li>名字: {name}</li>
+            <li>年紀: {age+5}</li>
+            <li>性別: {sex}</li>
+          </ul>
+        )
+      }
+    }
+
+    ReactDOM.render(<Person age="27" sex="male"/>, document.getElementById("root"))
+    const p = {name: "Amy", age: 20}
+    // ReactDOM.render(<Person {...p}/>, document.getElementById("root2"))
+
+    ReactDOM.render(<Person age={27} sex="male"/>, document.getElementById("root3"))
+    
+  </script>
+</body>
+</html>
