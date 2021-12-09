@@ -19,6 +19,10 @@ const sum = (...numbers) => {
 const person = {name: 'John', age: 50}
 const person2 = {...person} // 淺拷貝
 
-// console.log(...person); // 報錯，不能這樣展開物件
+// console.log(...person); // 報錯，不能這樣展開物件，但是在 React 提供這個方式
 console.log({...person});
 console.log(person2);
+
+// 複製時同時修改合併
+const person3 = {...person, name:'Allen', address:'J'}
+console.log(person3);
