@@ -9,8 +9,8 @@
 
   </style>
   <div id="root"></div>
-  <!-- <div id="root2"></div>
-  <div id="root3"></div> -->
+  <!-- <div id="root2"></div> -->
+  <div id="root3"></div>
 </head>
 <body>
   <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
@@ -27,7 +27,7 @@
         return (
           <ul>
             <li>名字: {name}</li>
-            <li>年紀: {age}</li>
+            <li>年紀: {age+5}</li>
             <li>性別: {sex}</li>
           </ul>
         )
@@ -50,7 +50,7 @@
     const p = {name: "Amy", age: 20}
     // ReactDOM.render(<Person {...p}/>, document.getElementById("root2"))
 
-    // ReactDOM.render(<Person age="27" sex="male"/>, document.getElementById("root3"))
+    ReactDOM.render(<Person age={27} sex="male"/>, document.getElementById("root3"))
     
   </script>
 </body>
