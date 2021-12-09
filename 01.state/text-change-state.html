@@ -19,15 +19,15 @@
   <script type="text/babel">
     //  Class component
     class Weather extends React.Component {
-      
+      // 官網說明道 constructor 通常僅使用於此兩種情況 基本上絕大部分是可以不寫的
       constructor(props) {
         console.log('constructor');
         super(props);
-        this.state = {
+        this.state = {  // 設定初始值 狀況一
           isHot: false,
           feel: '好爽'
         };
-        this.changeIsHot = this.changeIsHot.bind(this);
+        this.changeIsHot = this.changeIsHot.bind(this); // 為事件綁定實例 狀況二
       }
 
       render() {
