@@ -34,11 +34,15 @@
       }
     }
 
-    console.log(PropTypes); // 有這東西 但下面不生效沒丟錯誤訊息 ??
-
+    console.log(PropTypes); // 有這東西
+    // 型別必傳限制設定 這好像不生效，亂傳卻沒丟錯誤訊息 ??
     Person.propTypes = {
       name: PropTypes.string.isRequired,
       age: PropTypes.number,
+    }
+    // 預設值設定 有效
+    Person.defaultProps = {
+      name: 'Allen'
     }
     
 
