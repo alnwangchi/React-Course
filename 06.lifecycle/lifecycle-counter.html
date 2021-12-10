@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+
+  </style>
+  <div id="root"></div>
+</head>
+<body>
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <!-- 用於限制屬性類型 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.min.js" integrity="sha512-ssNhh7jlzc+K93ckIlSXFHHz6fSFv0l619WOv8xbFNRbFOujbasb42LVMOggDrQR1ScJncoWb+KAJx1uF3ipjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/babel">
+
+    class Counter extends React.Component {
+
+      constructor(props) {
+        console.log('初始化的step01 : constructor'); // 初始第一步
+        super(props);
+        // init
+        this.state = {
+          number: 0
+        }
+      }
+  
+      add = () => {
+        const {number} = this.state
+        this.setState({number: number+1})
+      }
+
+      remove = () => {
+        ReactDOM.unmountComponentAtNode(document.querySelector("#root"))
+      }
+      // 不改 state 強制更新
+      force = () => {
+        // 直接跳過 shouldComponentUpdate 這一步強制更新 也沒在管 shouldComponentUpdate return true or false
+        this.forceUpdate()
+      }
+
+      componentWillMount(){
+        console.log('初始化的step02 : componentWillMount'); // 初始第二步
+      }
+
+      componentDidMount(){
+        console.log('初始化的step04 : componentDidMount'); // 初始第四步
+      }
+
+      componentWillUnmount(){
+        console.log('componentWillUnmount'); // 卸載前最後一步
+      }
+
+      // 這就好像一個閥門
+      shouldComponentUpdate() {  // 更新 state 第一步
+        // 當我在更改 state 時會呼叫這個 func
+        // 在不寫的情況下 state 改變時會預設 return true 進而繼續執行 render
+        // 但在自定義的時候就可以用來做判斷 return true or false
+        // 所以就可以作為某些情況下不進行 render
+        console.log('更新的step01 : shouldComponentUpdate');
+        return true;
+      }
+
+      componentWillUpdate() { // 更新 state 第二步
+        console.log('更新的step02 : componentWillUpdate');
+      }
+
+      componentDidUpdate() {
+        console.log('更新的step04 : componentDidUpdate'); // // 更新 state 第四步
+      }
+
+      render() {
+        console.log('初始化以及更新的step03 : render'); // 初始第三步 // 更新 state 第三步
+        const {number} = this.state
+        return (
+          <div>
+            <h3>目前數值為</h3>
+            <h1>{number}</h1>
+            <button onClick={this.add}>點擊增加</button>
+            <button onClick={this.remove}>卸載元件</button>
+            <button onClick={this.force}>強制更新</button>
+          </div>
+        )
+      }
+    }
+
+    ReactDOM.render(<Counter />, document.getElementById("root"))
+    
+  </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+
+  </style>
+  <div id="root"></div>
+</head>
+<body>
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <!-- 用於限制屬性類型 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.min.js" integrity="sha512-ssNhh7jlzc+K93ckIlSXFHHz6fSFv0l619WOv8xbFNRbFOujbasb42LVMOggDrQR1ScJncoWb+KAJx1uF3ipjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/babel">
+    class Life extends React.Component {
+
+      state = {
+        opacity: 1
+      }
+
+      death = () => {
+        // 卸載元件
+        ReactDOM.unmountComponentAtNode(document.getElementById("root"))
+      }
+
+      // 當元件第一次掛載到頁面中 React 會幫我執行一次
+      componentDidMount() {
+        console.log('componentDidMount');
+        this.timer = setInterval(() => {
+          let {opacity} = this.state
+          opacity -= 0.1
+          if(opacity <= 0) opacity = 1
+          this.setState({opacity: opacity})
+        },200)
+      }
+
+      
+      // 當元件卸載之前 React 會幫我執行 就好比我快要涼了 要交代的後事
+      // componentWillUnmount() {
+      //   clearInterval(this.timer)
+      // }
+      
+      // 現在版本時不是就算沒有在 unmount 的時候清除計時器也不會報錯?
+
+      render() {
+        console.log('render');
+        return (
+          <div>
+            <h1 style={{opacity: this.state.opacity}}>React 好難學喔</h1>
+            <button onClick={this.death}>我不想活了都</button>
+          </div>
+        )
+      }
+
+    }
+
+    ReactDOM.render(<Life />, document.getElementById("root"))
+    
+  </script>
+</body>
+</html>
