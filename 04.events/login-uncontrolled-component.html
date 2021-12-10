@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+
+  </style>
+  <div id="root"></div>
+</head>
+<body>
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <!-- 用於限制屬性類型 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.min.js" integrity="sha512-ssNhh7jlzc+K93ckIlSXFHHz6fSFv0l619WOv8xbFNRbFOujbasb42LVMOggDrQR1ScJncoWb+KAJx1uF3ipjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/babel">
+    // 簡單解釋非受控元件就是須透過 ref 取得 DOM 元素中的資料做操作
+    class LogIn extends React.Component {
+
+      handleSubmit = (e) => {
+        e.preventDefault();
+        const {user, password} = this
+        alert(`使用者為${user.value} 密碼為${password.value}`)
+      }
+
+      render() {
+        return (
+          <form action="https://alnwangchi.github.io/" onSubmit={this.handleSubmit}>
+            <div class="type_box">
+              <label for="user">使用者:</label>
+              <input ref={c => this.user = c} type="text" name="user" id="user" />
+            </div>
+            <div class="type_box">
+              <label for="password">密碼:</label>
+              <input ref={c => this.password = c} type="text" name="password" id="password" />
+            </div>
+            <button>送出</button>
+          </form>
+        )
+      }
+    }
+    
+    ReactDOM.render(<LogIn />, document.getElementById("root"))
+    
+  </script>
+</body>
+</html>
