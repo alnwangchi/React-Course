@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+
+  </style>
+  <div id="root"></div>
+</head>
+<body>
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <!-- 用於限制屬性類型 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.min.js" integrity="sha512-ssNhh7jlzc+K93ckIlSXFHHz6fSFv0l619WOv8xbFNRbFOujbasb42LVMOggDrQR1ScJncoWb+KAJx1uF3ipjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/babel">
+
+    class Counter extends React.Component {
+
+      constructor(props) {
+        console.log('初始化的step01 : constructor'); // 初始第一步
+        super(props);
+        // init
+        this.state = {
+          number: 0
+        }
+      }
+  
+      add = () => {
+        const {number} = this.state
+        this.setState({number: number+1})
+      }
+
+      remove = () => {
+        ReactDOM.unmountComponentAtNode(document.querySelector("#root"))
+      }
+      // 不改 state 強制更新
+      force = () => {
+        // 直接跳過 shouldComponentUpdate 這一步強制更新 也沒在管 shouldComponentUpdate return true or false
+        this.forceUpdate()
+      }
+
+      UNSAFE_componentWillMount(){
+        console.log('初始化的step02 : UNSAFE_componentWillMount'); // 初始第二步
+      }
+
+      componentDidMount(){
+        console.log('初始化的step04 : componentDidMount'); // 初始第四步
+      }
+
+      componentWillUnmount(){
+        console.log('componentWillUnmount'); // 卸載前最後一步
+      }
+
+      // 這就好像一個閥門
+      shouldComponentUpdate() {  // 更新 state 第一步
+        console.log('更新的step01 : shouldComponentUpdate');
+        return true;
+      }
+      // 掛載及更新皆會執行
+      static getDerivedStateFromProps(props, state) {
+        console.log('新勾子 : getDerivedStateFromProps', props, state);
+        // 必須 return 第一種的 state Object 第二種的 null
+        return null
+        // return {
+        //   number: 999
+        // }
+        return props
+        // 應該不常用吧 官網寫到 "這個方法是為了某些很少見的例子而存在的"
+        // 就是讓 state 狀態完全取決於 props 大概知道就好先
+      }
+
+      UNSAFE_componentWillUpdate() { // 更新 state 第二步
+        console.log('更新的step02 : UNSAFE_componentWillUpdate');
+      }
+      // 官網寫道 "這個方法並不常見"
+      getSnapshotBeforeUpdate() {
+        console.log('新勾子 : getSnapshotBeforeUpdate');
+        return 'Allen W' // 紀錄某值可在 componentDidUpdat() 取用 想紀錄啥就紀錄啥
+      }
+
+
+      componentDidUpdate(preProps, preState, snapshot) {
+        // 在元件重新 render 之前可以取得以上三個值
+        console.log('更新的step04 : componentDidUpdate', preProps, preState, snapshot); // // 更新 state 第四步
+      }
+
+      render() {
+        console.log('初始化以及更新的step03 : render'); // 初始第三步 // 更新 state 第三步
+        const {number} = this.state
+        return (
+          <div>
+            <h3>目前數值為</h3>
+            <h1>{number}</h1>
+            <button onClick={this.add}>點擊增加</button>
+            <button onClick={this.remove}>卸載元件</button>
+            <button onClick={this.force}>強制更新</button>
+          </div>
+        )
+      }
+    }
+
+    ReactDOM.render(<Counter name="Allen" number={199}/>, document.getElementById("root"))
+    
+  </script>
+</body>
+</html>
