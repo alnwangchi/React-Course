@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="news.css">
+  <style>
+
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <!-- 用於限制屬性類型 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.min.js" integrity="sha512-ssNhh7jlzc+K93ckIlSXFHHz6fSFv0l619WOv8xbFNRbFOujbasb42LVMOggDrQR1ScJncoWb+KAJx1uF3ipjw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/babel">
+
+    class NewList extends React.Component {
+      
+      state = {
+        newsAry : []
+      }
+      // 畫面初始化時給一個計時器去產生新聞
+      componentDidMount() {
+        setInterval(() => {
+          const {newsAry} = this.state // 取值
+          const news = `News${newsAry.length + 1}` // 建立新的新聞
+          this.setState({ // 每隔一秒把新一則新聞放到狀態陣列中的最前面 
+            newsAry: [news, ...newsAry]
+          })
+        }, 1000)
+      }
+
+      getSnapshotBeforeUpdate() {
+        return this.refs.news_box.scrollHeight // 在元件更新前紀錄新聞列表的滾動高度 並往下傳
+      }
+
+      componentDidUpdate(props, state, snapshot) { // 元件更新後執行
+        console.log(snapshot);
+        // 將新聞列表滾動到某高度位置
+        // 某高度位置為原位置再加上 "當前新聞列表滾動高度 - 更新前的列表滾動高度" 也就是一篇新聞的高度
+        this.refs.news_box.scrollTop += this.refs.news_box.scrollHeight - snapshot
+      }
+
+      render() {
+        return (
+          <div className="news_box" ref="news_box">
+            {
+              this.state.newsAry.map((n, index) => {
+                return <div key={index} className="news">{n}</div>
+              })
+            }
+          </div>
+        )
+      }
+    }
+
+    ReactDOM.render(<NewList />, document.getElementById("root"))
+    
+  </script>
+</body>
+</html>
